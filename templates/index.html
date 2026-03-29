@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tie & Bowtie Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 60px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 { margin-bottom: 10px; }
+
+    p { color: #555; margin-bottom: 20px; }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 10px 24px;
+      font-size: 1rem;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 8px;
+      display: none;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>👔 Tie & Bowtie Detector</h1>
+  <p>Paste an image URL and click Detect</p>
+
+  <input type="text" id="urlInput" placeholder="https://example.com/image.jpg" />
+  <br>
+  <button onclick="predict()">Detect</button>
+
+  <img id="preview" alt="Image preview" />
+  <div id="result"></div>
+
+  <script>
+    async function predict() {
+      const url = document.getElementById("urlInput").value.trim();
+      const result = document.getElementById("result");
+      const preview = document.getElementById("preview");
+
+      if (!url) {
+        result.textContent = "Please enter a URL first.";
+        return;
+      }
+
+      preview.src = url;
+      preview.style.display = "block";
+      result.textContent = "Detecting...";
+
+      const response = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        result.textContent = "Error: " + data.error;
+      } else if (data.detections.length === 0) {
+        result.textContent = "Nothing detected.";
+      } else {
+        result.textContent = data.detections
+          .map(d => `${d.class} — ${d.confidence}% confidence`)
+          .join(" | ");
+      }
+    }
+  </script>
+
+</body>
+</html>
