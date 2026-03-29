@@ -52,6 +52,18 @@ http://127.0.0.1:5000
 
 ---
 
+## ⚠️ Known Issues & Limitations
+
+- The model only detects **ties and bowties** — other clothing items are ignored
+- Images must be accessible via a direct public URL
+- Some websites block image downloads — use direct image links 
+- Box accuracy drops when ties are partially hidden or at unusual angles
+
+
+---
+
+
+
 ##  Dependencies
 
 - Python 3.10
