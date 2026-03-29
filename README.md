@@ -52,7 +52,7 @@ http://127.0.0.1:5000
 
 ---
 
-## ⚠️ Known Issues & Limitations
+## Known Issues & Limitations
 
 - The model only detects **ties and bowties** — other clothing items are ignored
 - Images must be accessible via a direct public URL
